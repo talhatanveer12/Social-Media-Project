@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MY APP</title>
+</head>
+<body>
+   
+ 
+ <!--  SINGLE FILE -->
+<form action="/uploadfile" enctype="multipart/form-data" method="POST"> 
+   <input type="file" name="myFile" />
+   <input type="submit" value="Upload a file"/>
+</form>
+ 
+ 
+<!-- MULTIPLE FILES -->
+ 
+<form action="/uploadmultiple"  enctype="multipart/form-data" method="POST">
+  Select images: <input type="file" name="myFiles" multiple>
+  <input type="submit" value="Upload your files"/>
+</form>
+ 
+  <!--   PHOTO-->
+ 
+<form action="/api/post/create" enctype="multipart/form-data" method="POST"> 
+  <input type="file" name="myImage" accept="image/*" />
+  <input type="text" name="decs" />
+  <input type="text" name="userId" value="637c9660de573f5290f5123e" />
+  <input type="submit" value="Upload Photo"/>
+
+</form>
+ 
+ 
+ 
+</body>
+</html>
