@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import { Navigate } from "react-router";
 
 const VerifyUser = (props) => {
-  const { isUserLogin } = useSelector((state) => state.Auth);
-  return isUserLogin ? (
+  const { isAuthenticated } = useSelector((state) => state.Auth);
+  return isAuthenticated ? (
     <React.Fragment>{props.children}</React.Fragment>
   ) : (
     <Navigate to="/Login" replace/>

@@ -1,5 +1,5 @@
 import "./App.css";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -13,8 +13,9 @@ import { useMemo } from "react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "./theme";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import VerifyUser from "./pages/Auth/VerifyUser";
+import { loadUser } from "./store/Auth/authAction";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,9 +35,17 @@ const router = createBrowserRouter(
 );
 
 function App() {
+  const dispatch = useDispatch();
+  const {token} = useSelector((state) => state.Auth);
+  const {detail} = useSelector((state) => state.User);
   const { mode } = useSelector((state) => state.Theme);
-  //const mode = "dark";
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+
+  useEffect(() => {
+    if(token && !detail) {
+      dispatch(loadUser());
+    }
+  },[dispatch,token,detail]);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

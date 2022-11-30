@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,9 +13,11 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
-import { login } from "../../store/authSlice";
 import { useNavigate } from "react-router";
-import axiosInstance from "../../Http-Request/axios-instance";
+import Error from "../../components/UI/Error";
+import Toast from "../../components/UI/Toast";
+import { loginUser } from "../../store/Auth/authAction";
+
 
 function Copyright(props) {
   return (
@@ -38,33 +40,29 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
+  const [error,setError] = useState(null);
+  const [toast,setToast] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+    dispatch(loginUser(data)).then((res) => {
+      if(res.status === 200) {
+        navigate("/");
+      }
+      else {
+        setError(res.data.error);
+      }
     });
-
-    await axiosInstance
-      .post("/auth/login", {
-        email: data.get("email"),
-        password: data.get("password"),
-      })
-      .then(({ data }) => {
-        if (data.status === "login in") {
-          dispatch(login({ user: "Talha", token: "232323" }));
-          navigate("/");
-        }
-      });
   };
 
   return (
     <ThemeProvider theme={theme}>
+    
       <Container component="main" maxWidth="xs">
         <CssBaseline />
+        
         <Box
           sx={{
             marginTop: 8,
@@ -79,12 +77,14 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          
           <Box
             component="form"
             onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
           >
+          {error && <Error  message={error}/>}
             <TextField
               margin="normal"
               required
@@ -131,8 +131,10 @@ export default function Login() {
             </Grid>
           </Box>
         </Box>
+        <Toast open={toast} handleClose={() => setToast(false)} type="error" message={error}></Toast>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
+    
   );
 }

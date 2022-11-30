@@ -4,7 +4,7 @@ import { Box, Typography, useTheme } from "@mui/material";
 import Friend from "../UI/Friend";
 import WidgetWrapper from "../UI/WidgetWrapper";
 
-const FriendListWidget = () => {
+const FriendListWidget = ({title,data,friend,follower}) => {
 
   const { palette } = useTheme();
 
@@ -16,17 +16,20 @@ const FriendListWidget = () => {
         fontWeight="500"
         sx={{ mb: "1.5rem" }}
       >
-        Friend List
+        {title}
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-
-          <Friend
-            key={1}
-            friendId={1}
-            name={`Talha Tanver`}
-            subtitle={'qwewq'}
+      {data.length !== 0 ? data.map((data) => { return <Friend
+            key={data?._id}
+            friendId={data?._id}
+            name={data?.name}
+            subtitle={data?.bio}
+            email={data?.email}
+            friend={friend}
+            follower={follower}
             userPicturePath={'../../../public/logo192.png'}
-          />
+          />}) : <Typography variant="h4" align="center">No Friends Found</Typography> }
+          
       </Box>
     </WidgetWrapper>
   );

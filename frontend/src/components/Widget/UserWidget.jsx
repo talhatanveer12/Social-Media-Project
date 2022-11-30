@@ -2,7 +2,7 @@ import {
   ManageAccountsOutlined,
   EditOutlined,
   LocationOnOutlined,
-  WorkOutlineOutlined,
+  InfoOutlined,
 } from "@mui/icons-material";
 import { Box, Typography, Divider, useTheme } from "@mui/material";
 import UserImage from "../UI/UserImage";
@@ -10,8 +10,10 @@ import WidgetWrapper from "../UI/WidgetWrapper";
 
 
 import Card from "../UI/Card";
+import { useSelector } from "react-redux";
 
-const UserWidget = ({ userId, picturePath }) => {
+const UserWidget = () => {
+  const {detail,totalFollower,totalFollowing} = useSelector((state) => state.User);
   const { palette } = useTheme();
   const dark = palette.neutral.dark;
   const medium = palette.neutral.medium;
@@ -28,7 +30,7 @@ const UserWidget = ({ userId, picturePath }) => {
         //onClick={() => navigate(`/profile/${userId}`)}
       >
         <Card gap="1rem">
-          <UserImage image={picturePath} />
+          <UserImage image />
           <Box>
             <Typography
               variant="h4"
@@ -41,9 +43,9 @@ const UserWidget = ({ userId, picturePath }) => {
                 },
               }}
             >
-              {"Talha"} {"Tanveeer"}
+              {detail?.name}
             </Typography>
-            <Typography color={medium}>{4} friends</Typography>
+            <Typography color={medium}>{totalFollowing} friends</Typography>
           </Box>
         </Card>
         <ManageAccountsOutlined />
@@ -55,11 +57,11 @@ const UserWidget = ({ userId, picturePath }) => {
       <Box p="1rem 0">
         <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
           <LocationOnOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{"location"}</Typography>
+          <Typography color={medium}>{detail?.address}</Typography>
         </Box>
         <Box display="flex" alignItems="center" gap="1rem">
-          <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{'occupation'}</Typography>
+          <InfoOutlined fontSize="large" sx={{ color: main }} />
+          <Typography color={medium}>{detail?.bio}</Typography>
         </Box>
       </Box>
 
@@ -68,15 +70,15 @@ const UserWidget = ({ userId, picturePath }) => {
       {/* THIRD ROW */}
       <Box p="1rem 0">
         <Card mb="0.5rem">
-          <Typography color={medium}>Who's viewed your profile</Typography>
+          <Typography color={medium}>No of Followers</Typography>
           <Typography color={main} fontWeight="500">
-            {"viewedProfile"}
+            {totalFollower}
           </Typography>
         </Card>
         <Card>
-          <Typography color={medium}>Impressions of your post</Typography>
+          <Typography color={medium}>No of Followings</Typography>
           <Typography color={main} fontWeight="500">
-            {"impressions"}
+            {totalFollowing}
           </Typography>
         </Card>
       </Box>

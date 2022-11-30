@@ -1,19 +1,32 @@
+import { useEffect,useState } from "react";
+import { useDispatch } from "react-redux";
+import { getUserDetail } from "../../store/User/userAction";
 import PostWidget from "./PostWidget";
 
-const PostsWidget = ({ userId, isProfile = false }) => {
+const PostsWidget = ({ userId,postId,comments, description,picturePath,likes,isProfile = false }) => {
+  const dispatch = useDispatch();
+  const [userDetail, setUserDetail] = useState(null);
+
+  useEffect(() => {
+    dispatch(getUserDetail(userId)).then((result) => {
+      setUserDetail(result)
+    }).catch((err) => {
+      
+    });
+  },[dispatch,userId]);
   return (
     <>
       <PostWidget
-        key={1}
-        postId={1}
-        postUserId={1}
-        name={`Talha Tanveer`}
-        description={"Hello World"}
+        key={postId}
+        postId={postId}
+        postUserId={userId}
+        name={userDetail?.name}
+        description={description}
         location={"location"}
-        picturePath={"../../../public/logo192.png"}
+        picturePath={picturePath}
         userPicturePath={"../../../public/logo192.png"}
-        likes={2}
-        comments={"comments"}
+        likes={likes}
+        comments={comments}
       />
     </>
   );

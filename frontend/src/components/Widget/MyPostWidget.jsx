@@ -1,10 +1,10 @@
 import {
   EditOutlined,
   DeleteOutlined,
-  AttachFileOutlined,
-  GifBoxOutlined,
+  //AttachFileOutlined,
+  //GifBoxOutlined,
   ImageOutlined,
-  MicOutlined,
+  //MicOutlined,
   MoreHorizOutlined,
 } from "@mui/icons-material";
 import {
@@ -23,16 +23,39 @@ import { useState } from "react";
 import Card from "../UI/Card";
 import WidgetWrapper from "../UI/WidgetWrapper";
 import UserImage from "../UI/UserImage";
+import { useDispatch, useSelector } from "react-redux";
+import { createPost } from "../../store/Post/postAction";
 
 const MyPostWidget = ({ picturePath }) => {
+  const dispatch = useDispatch();
+  const { detail } = useSelector((state) => state.User);
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
-  const [post, setPost] = useState("");
+  const [currentPost, setPost] = useState("");
   const { palette } = useTheme();
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
 
+  const handlePost = () => {
+    const formData = new FormData();
+    formData.append("userId", detail._id);
+    formData.append("decs", currentPost);
+    if (image) {
+      formData.append("image", image);
+      formData.append("picturePath", image.name);
+    }
+
+    dispatch(createPost(formData));
+
+    setImage(null);
+    setPost("");
+    setIsImage(false);
+  };
+
+
+
+  
   return (
     <WidgetWrapper>
       <Card gap="1.5rem">
@@ -40,7 +63,7 @@ const MyPostWidget = ({ picturePath }) => {
         <InputBase
           placeholder="What's on your mind..."
           onChange={(e) => setPost(e.target.value)}
-          value={post}
+          value={currentPost}
           sx={{
             width: "100%",
             backgroundColor: palette.neutral.light,
@@ -82,7 +105,7 @@ const MyPostWidget = ({ picturePath }) => {
                 </Box>
                 {image && (
                   <IconButton
-                    onClick={() => setImage(null)}
+                    onClick={() => {setImage(null)}}
                     sx={{ width: "15%" }}
                   >
                     <DeleteOutlined />
@@ -97,7 +120,7 @@ const MyPostWidget = ({ picturePath }) => {
       <Divider sx={{ margin: "1.25rem 0" }} />
 
       <Card>
-        <Card gap="0.25rem" onClick={() => setIsImage(!isImage)}>
+        <Card gap="0.25rem" onClick={() => {setIsImage(!isImage)}}>
           <ImageOutlined sx={{ color: mediumMain }} />
           <Typography
             color={mediumMain}
@@ -107,9 +130,10 @@ const MyPostWidget = ({ picturePath }) => {
           </Typography>
         </Card>
 
+
         {isNonMobileScreens ? (
           <>
-            <Card gap="0.25rem">
+            {/* <Card gap="0.25rem">
               <GifBoxOutlined sx={{ color: mediumMain }} />
               <Typography color={mediumMain}>Clip</Typography>
             </Card>
@@ -122,7 +146,7 @@ const MyPostWidget = ({ picturePath }) => {
             <Card gap="0.25rem">
               <MicOutlined sx={{ color: mediumMain }} />
               <Typography color={mediumMain}>Audio</Typography>
-            </Card>
+            </Card> */}
           </>
         ) : (
           <Card gap="0.25rem">
@@ -131,8 +155,8 @@ const MyPostWidget = ({ picturePath }) => {
         )}
 
         <Button
-          disabled={!post}
-          //onClick={handlePost}
+          disabled={!currentPost}
+          onClick={handlePost}
           sx={{
             color: palette.background.alt,
             backgroundColor: palette.primary.main,

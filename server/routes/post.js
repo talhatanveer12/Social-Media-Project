@@ -17,20 +17,28 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post("/create", upload.single("myImage"), async (req, res) => {
-  const post = new Post({
+router.post("/create", upload.single("image"), async (req, res) => {
+  const newPost = new Post({
     decs: req.body.decs,
-    image: req.file.filename,
+    image: req.file?.filename,
     userId: req.body.userId,
+    likes: {},
   });
 
-  await post.save();
+  await newPost.save();
+  const post = await Post.find();
+  //res.status(201).json(post);
   try {
-    res.status(200).json("Successfully");
+    res.status(200).json({post: post});
   } catch (error) {
     res.status(404).json("failed");
   }
 });
+
+router.get('/all-post', async (req,res) => {
+  const post = await Post.find();
+  res.status(200).json({post: post});
+})
 
 router.post('/:id/comments', async (req,res) => {
   const post = await Post.findById(req.params.id);
@@ -38,14 +46,47 @@ router.post('/:id/comments', async (req,res) => {
   await post.updateOne({
     $push: {
       comments: {
-        name: user.name,
-        email: user.email,
-        profilePic: user.profilePic,
+        name: user?.name,
+        email: user?.email,
+        profilePic: user?.profilePic,
         message: req.body.message
       }
     }
   });
-  res.status(200).json("Comments Add Successfully");
+
+  const getPost = await Post.find();
+
+  try {
+    res.status(200).json({post: getPost});
+  } catch (error) {
+    res.status(404).json("failed");
+  }
+  
 })
+
+router.patch('/:id/likes',  async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req.body;
+    const post = await Post.findById(id);
+    const isLiked = post.likes.get(userId);
+
+    if (isLiked) {
+      post.likes.delete(userId);
+    } else {
+      post.likes.set(userId, true);
+    }
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      id,
+      { likes: post.likes },
+      { new: true }
+    );
+
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+});
 
 module.exports = router;

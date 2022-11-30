@@ -21,14 +21,14 @@ import {
   Close,
 } from "@mui/icons-material";
 import Card from "./UI/Card";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setTheme } from "../store/themeSlice";
 import { useNavigate } from "react-router";
 
 const Navbar = () => {
   const navigate = useNavigate();
-    
   const dispatch = useDispatch();
+  const {detail} = useSelector((state) => state.User);
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
 
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
@@ -39,7 +39,8 @@ const Navbar = () => {
   const background = theme.palette.background.default;
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
-  const fullName = `Talha Tanveer`;
+  const fullName = `${detail?.name}`;
+
 
   return (
     <Card padding="1rem 6%" backgroundColor={alt}>

@@ -4,7 +4,7 @@ import Card from "./Card";
 import UserImage from "./UserImage";
 
 
-const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
+const Friend = ({ friend, name,email, subtitle, userPicturePath,follower }) => {
 
 
   const { palette } = useTheme();
@@ -13,14 +13,14 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
-  const isFriend = true;
+  const isFriend = friend && friend.find((data) => { return data.email === email });
 
   return (
     <Card>
       <Card gap="1rem">
         <UserImage image={userPicturePath} size="55px" />
         <Box
-          onClick="#"
+          //onClick="#"
         >
           <Typography
             color={main}
@@ -40,16 +40,16 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           </Typography>
         </Box>
       </Card>
-      <IconButton
-        onClick='#'
+      {(!follower || !isFriend) && <IconButton
+        //onClick='#'
         sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
       >
         {isFriend ? (
-          <PersonRemoveOutlined sx={{ color: primaryDark }} />
+         <PersonRemoveOutlined sx={{ color: primaryDark }} />
         ) : (
           <PersonAddOutlined sx={{ color: primaryDark }} />
         )}
-      </IconButton>
+      </IconButton>}
     </Card>
   );
 };

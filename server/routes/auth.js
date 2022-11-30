@@ -27,13 +27,26 @@ router.post("/login", async (req, res) => {
   //if (error) return res.status(400).send(error.details[0].message);
 
   let user = await User.findOne({ email: req.body.email });
-  if (!user) return res.status(400).send("Invalid Email...");
+  if (!user) return res.status(422).json({error: "Invalid Email and Password"});
 
   let checkPassword = await bcrypt.compare(req.body.password, user.password);
-  if (!checkPassword) return res.status(400).send("Invalid Password...");
+  if (!checkPassword) return res.status(422).json({error: "Invalid Email and Password"});
+
+
 
   const token = user.generateAuthToken();
-  res.send(token);
+  user.password = null;
+  const detail = {
+    name: user.name,
+    email: user.email,
+    _id: user._id,
+    bio: user.bio,
+    profilePic: user.profilePic
+  };
+
+  const follower = user.followers;
+  const following = user.followings;
+  res.json({status: 'Login',token: token,user: user,detail: detail, follower: follower,following: following});
 });
 
 // function validate(req) {

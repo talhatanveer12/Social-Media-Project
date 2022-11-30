@@ -4,13 +4,24 @@ const { User } = require("../models/User");
 const router = express.Router();
 
 router.get("/me", auth, async (req, res) => {
-  const users = await User.findById(req.user._id).select("-password");
-  res.send(users);
+  const user = await User.findById(req.user._id).select("-password");
+  const detail = {
+    name: user.name,
+    email: user.email,
+    _id: user._id,
+    bio: user.bio,
+    profilePic: user.profilePic
+  };
+
+  const follower = user.followers;
+  const following = user.followings;
+
+  res.send({detail: detail, follower: follower,following: following});
 });
 
 router.post("/follow", auth, async (req, res) => {
-  const currentUser = await User.findById(req.user._id).select("-password");
-  const user = await User.findById("637c967ade573f5290f51241").select(
+  const currentUser = await User.findById("637c9660de573f5290f5123e").select("-password");
+  const user = await User.findById("637c9421b0337f3a00ad8edc").select(
     "-password"
   );
 
@@ -97,5 +108,10 @@ router.get("/follower", auth, async (req, res) => {
   const users = await User.findById(req.user._id).select("followers");
   res.send(users);
 });
+
+router.get("/:id", auth, async (req,res) => {
+  const users = await User.findById(req.params.id).select("-password");
+  res.send(users);
+})
 
 module.exports = router;
