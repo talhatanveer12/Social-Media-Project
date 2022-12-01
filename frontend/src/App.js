@@ -16,6 +16,8 @@ import { themeSettings } from "./theme";
 import { useDispatch, useSelector } from "react-redux";
 import VerifyUser from "./pages/Auth/VerifyUser";
 import { loadUser } from "./store/Auth/authAction";
+import EditProfile from "./pages/Profile/EditProfile";
+import Profile from "./pages/Profile/Profile";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,22 +32,24 @@ const router = createBrowserRouter(
           </VerifyUser>
         }
       ></Route>
+      <Route path="/EditProfile" element={<EditProfile />} />
+      <Route path="/Profile" element={<Profile />} />
     </React.Fragment>
   )
 );
 
 function App() {
   const dispatch = useDispatch();
-  const {token} = useSelector((state) => state.Auth);
-  const {detail} = useSelector((state) => state.User);
+  const { token } = useSelector((state) => state.Auth);
+  const { detail } = useSelector((state) => state.User);
   const { mode } = useSelector((state) => state.Theme);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
 
   useEffect(() => {
-    if(token && !detail) {
+    if (token && !detail) {
       dispatch(loadUser());
     }
-  },[dispatch,token,detail]);
+  }, [dispatch, token, detail]);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

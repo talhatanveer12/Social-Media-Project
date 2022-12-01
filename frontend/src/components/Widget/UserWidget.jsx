@@ -11,6 +11,7 @@ import WidgetWrapper from "../UI/WidgetWrapper";
 
 import Card from "../UI/Card";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const UserWidget = () => {
   const {detail,totalFollower,totalFollowing} = useSelector((state) => state.User);
@@ -32,6 +33,7 @@ const UserWidget = () => {
         <Card gap="1rem">
           <UserImage image />
           <Box>
+          <Link to='/Profile' style={{textDecoration: 'none'}}>
             <Typography
               variant="h4"
               color={dark}
@@ -45,10 +47,26 @@ const UserWidget = () => {
             >
               {detail?.name}
             </Typography>
+            </Link>
             <Typography color={medium}>{totalFollowing} friends</Typography>
           </Box>
         </Card>
-        <ManageAccountsOutlined />
+        <Link to='EditProfile'>
+        <Typography
+              variant="h4"
+              color={dark}
+              fontWeight="500"
+              sx={{
+                "&:hover": {
+                  color: palette.primary.light,
+                  cursor: "pointer",
+                },
+              }}
+            >
+              <ManageAccountsOutlined />
+            </Typography>
+        
+        </Link>
       </Card>
 
       <Divider />

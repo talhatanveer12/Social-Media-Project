@@ -4,7 +4,7 @@ import Alert from '@mui/material/Alert';
 
 const Error = (props) => {
     return (
-        <Alert severity="error">{props.message}</Alert>
+        <Alert severity="error" sx={{marginBottom: "1rem"}}>{props.message}</Alert>
     );
 }
 

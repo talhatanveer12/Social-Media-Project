@@ -19,6 +19,15 @@ router.get("/me", auth, async (req, res) => {
   res.send({detail: detail, follower: follower,following: following});
 });
 
+router.get('/all-user',auth, async (req,res) => {
+  const user = await User.find().select("-password");
+  try {
+    res.status(200).json({user: user});
+  } catch (error) {
+    
+  }
+})
+
 router.post("/follow", auth, async (req, res) => {
   const currentUser = await User.findById("637c9660de573f5290f5123e").select("-password");
   const user = await User.findById("637c9421b0337f3a00ad8edc").select(

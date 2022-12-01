@@ -10,7 +10,7 @@ router.post("/register", async (req, res) => {
  // if (error) return res.status(400).send(error.details[0].message);
 
   let user = await User.findOne({ email: req.body.email });
-  if (user) return res.status(400).send("Email already exits....");
+  if (user) return res.status(400).json({error: "Email already exits"});
 
   user = new User(_.pick(req.body, ["name", "email", "password"]));
   user.password = await bcrypt.hash(user.password, 10);
@@ -19,7 +19,7 @@ router.post("/register", async (req, res) => {
 
   const token = user.generateAuthToken();
 
-  res.header("x-auth-token", token).send(_.pick(user, ["name", "email"]));
+  res.status(200).json('Successfully');
 });
 
 router.post("/login", async (req, res) => {

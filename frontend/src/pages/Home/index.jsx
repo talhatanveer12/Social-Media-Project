@@ -1,14 +1,18 @@
 import { Box, useMediaQuery } from "@mui/material";
 
-import MyPostWidget from "../components/Widget/MyPostWidget";
-import PostsWidget from "../components/Widget/PostsWidget";
+import MyPostWidget from "../../components/Widget/MyPostWidget";
+import PostsWidget from "../../components/Widget/PostsWidget";
 // import AdvertWidget from "../components/Widget/AdvertWidget";
-import FriendListWidget from "../components/Widget/FriendListWidget";
-import UserWidget from "../components/Widget/UserWidget";
-import Navbar from "../components/Navbar";
+import FriendListWidget from "../../components/Widget/FriendListWidget";
+import UserWidget from "../../components/Widget/UserWidget";
+import Navbar from "../../components/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getAllPost } from "../store/Post/postAction";
+import { getAllPost } from "../../store/Post/postAction";
+import socket from "../../Socket";
+import { setPost, setPostLike } from "../../store/Post/postSlice";
+import { getAllUserDetail } from "../../store/User/userAction";
+
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -16,9 +20,27 @@ const Home = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
   const { followers, followings } = useSelector((state) => state.User);
 
+  // const sendMessage = () => {
+  //   socket.emit("send_message", {message: "Hello"});
+  // }
+
   useEffect(() => {
     dispatch(getAllPost());
+    dispatch(getAllUserDetail());
   }, [dispatch]);
+
+  useEffect(()=>{
+   socket.on('receive_post',(data) => {
+     dispatch(setPost(data.message))
+   })
+   socket.on('receive_like',(data) => {
+    dispatch(setPostLike({post: data.message}))
+  })
+  socket.on('receive_comment',(data) => {
+    dispatch(setPost(data.message))
+  })
+   // eslint-disable-next-line
+  },[socket,dispatch])
 
   return (
     <Box>

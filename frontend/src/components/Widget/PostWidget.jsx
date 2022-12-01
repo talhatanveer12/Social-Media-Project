@@ -44,6 +44,7 @@ const PostWidget = ({
   // const isLiked = 1 ? true : false;
   // const likeCount = 1;
 
+
   const { palette } = useTheme();
   const main = palette.neutral.main;
   const primary = palette.primary.main;
@@ -64,6 +65,7 @@ const PostWidget = ({
     setComment('');
   };
 
+
   return (
     <WidgetWrapper m="2rem 0">
       <Friend
@@ -81,7 +83,7 @@ const PostWidget = ({
           height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
-          src={`http://localhost:5000/images/${picturePath}`}
+          src={`http://localhost:4000/images/${picturePath}`}
         />
       )}
       <Card mt="0.25rem">
@@ -141,7 +143,7 @@ const PostWidget = ({
           <Box mt="0.5rem">
           <Divider />
             {comments.map((comment, i) => (
-              <Box key={`${name}-${i}`}>
+              <Box key={`${'name'}-${i}`}>
                 
 
                 <Box mt="1rem" mb="1rem" flexDirection="row" display="flex">

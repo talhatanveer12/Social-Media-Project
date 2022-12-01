@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const multer = require("multer");
+const { Server } = require('socket.io');
+const http = require('http');
 const cors = require('cors');
 require("dotenv").config();
 const fs = require("file-system");
@@ -22,27 +24,6 @@ app.use(cors());
 app.use(express.urlencoded({limit: "90mb", extended: true }));
 app.use("/images", express.static("public/images"));
 
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "public/images");
-//   },
-//   filename: (req, file, cb) => {
-//     //const name = file.originalname.split(".");
-//     cb(null, file.originalname);
-//   },
-// });
-
-// const upload = multer({ storage: storage });
-// app.post("/api/upload", upload.single("myImage"), (req, res) => {
-//   var img = fs.readFileSync(req.body.myImage);
-//   var encode_image = img.toString("base64");
-//   try {
-//     return res.status(200).send(req.body);
-//   } catch (error) {
-//     console.error(error);
-//   }
-// });
-
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/page.html");
 });
@@ -51,5 +32,31 @@ app.use("/api/auth", auth);
 app.use("/api/user", user);
 app.use("/api/post", post);
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET",'POST']
+  }
+});
+
+io.on("connection", (socket) => {
+  socket.on("create_post",(data) => {
+    socket.broadcast.emit("receive_post",data);
+  });
+  socket.on("add_likes",(data) => {
+    socket.broadcast.emit("receive_like",data);
+  })
+  socket.on("add_comments",(data) => {
+    socket.broadcast.emit("receive_comment",data);
+  })
+});
+
+
+server.listen(4000, () => {
+  console.log('Server Running');
+})
+
+// const port = process.env.PORT || 3000;
+// app.listen(port, () => console.log(`Listening on port ${port}...`));
