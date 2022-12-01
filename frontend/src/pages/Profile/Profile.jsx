@@ -1,6 +1,8 @@
 import {
   Box,
+  Button,
   Divider,
+  Grid,
   Typography,
   useMediaQuery,
   useTheme,
@@ -10,8 +12,13 @@ import Navbar from "../../components/Navbar";
 import UserImage from "../../components/UI/UserImage";
 import ImageList from "@mui/material/ImageList";
 import ImageListItem from "@mui/material/ImageListItem";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
+  const { detail, totalFollower, totalFollowing } = useSelector(
+    (state) => state.User
+  );
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
   const { palette } = useTheme();
   const dark = palette.neutral.dark;
@@ -29,34 +36,43 @@ const Profile = () => {
           <Box flexDirection="row" gap="4rem" display="flex">
             <UserImage size="130px" />
             <Box flexDirection="column" gap="1rem" display="flex">
+            <Box flexDirection="row" gap="4rem" display="flex">
+            <Grid container gap="2rem">
               <Typography variant="h3" color={dark} fontWeight="500">
-                Talha Tanveer
+                {detail?.name}
               </Typography>
+              <Link to='/EditProfile' style={{textDecoration: "none"}}>
+              <Button variant="outlined">Edit Profile</Button>
+              </Link>
+              </Grid>
+              </Box>
               {isNonMobileScreens && (
                 <Box flexDirection="row" gap="4rem" display="flex">
-                  <Typography variant="h4" color={dark} fontWeight="500">
+                  <Typography variant="h5" color={dark} fontWeight="500">
                     0 Posts
                   </Typography>
-                  <Typography variant="h4" color={dark} fontWeight="500">
-                    1 Followers
+                  <Typography variant="h5" color={dark} fontWeight="500">
+                    {totalFollower} Followers
                   </Typography>
-                  <Typography variant="h4" color={dark} fontWeight="500">
-                    2 Following
+                  <Typography variant="h5" color={dark} fontWeight="500">
+                    {totalFollowing} Following
                   </Typography>
                 </Box>
               )}
 
-              <Typography variant="h4" color={dark} fontWeight="500">
-                Fastian 4C6F7665❗
+              <Typography variant="h5" color={dark} fontWeight="500">
+                {detail?.bio}
               </Typography>
             </Box>
           </Box>
           <Divider sx={{ margin: "1rem" }} />
           <Box>
             <ImageList
-              sx={{  height: 450 }}
+              sx={{ overflow: "hidden" }}
               cols={4}
+              gap={6}
               variant="root"
+
               //rowHeight={164}
             >
               {itemData.map((item) => (
@@ -65,7 +81,7 @@ const Profile = () => {
                     src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
                     srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
                     alt={item.title}
-                    cols={4}
+                    cols={1}
                     loading="lazy"
                     variant="standard"
                   />
