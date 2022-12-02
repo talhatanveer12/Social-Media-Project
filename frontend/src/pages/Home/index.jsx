@@ -27,6 +27,7 @@ const Home = () => {
   useEffect(() => {
     dispatch(getAllPost());
     dispatch(getAllUserDetail());
+    // eslint-disable-next-line
   }, [dispatch]);
 
   useEffect(()=>{
@@ -87,7 +88,7 @@ const Home = () => {
             <FriendListWidget
               title="Followings List"
               data={followings}
-              friend={followers}
+              friend={followings}
               follower={false}
             />
           </Box>

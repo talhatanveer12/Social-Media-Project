@@ -33,7 +33,7 @@ const router = createBrowserRouter(
         }
       ></Route>
       <Route path="/EditProfile" element={<EditProfile />} />
-      <Route path="/Profile" element={<Profile />} />
+      <Route path="/Profile/:id" element={<Profile />} />
     </React.Fragment>
   )
 );

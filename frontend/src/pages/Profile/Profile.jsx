@@ -7,21 +7,50 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../../components/Navbar";
 import UserImage from "../../components/UI/UserImage";
 import ImageList from "@mui/material/ImageList";
-import ImageListItem from "@mui/material/ImageListItem";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useParams } from "react-router-dom";
+import PostImage from "../../components/Widget/PostImage";
+import { getUserAllPost } from "../../store/Post/postAction";
+import { followUser, unfollowUser } from "../../store/User/userAction";
 
 const Profile = () => {
-  const { detail, totalFollower, totalFollowing } = useSelector(
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { userPost } = useSelector((state) => state.Post);
+  const { detail, otherUserDetail, followings } = useSelector(
     (state) => state.User
   );
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
   const { palette } = useTheme();
   const dark = palette.neutral.dark;
+
+  const isFriend =
+    followings &&
+    followings.find((data) => {
+      return data.email === otherUserDetail?.email;
+    });
+  
+  const handleAddFriend = () => {
+    const data = new FormData();
+    data.append("id", otherUserDetail?._id);
+    dispatch(followUser(data));
+    console.log("Add Friend");
+  }
+  const handleRemoveFriend = () => {
+    const data = new FormData();
+    data.append("id", otherUserDetail?._id);
+    dispatch(unfollowUser(data));
+    console.log("Remove Friend");
+  }
+
+  useEffect(() => {
+    dispatch(getUserAllPost(id));
+    // eslint-disable-next-line
+  }, [dispatch]);
   return (
     <Box>
       <Navbar />
@@ -36,32 +65,39 @@ const Profile = () => {
           <Box flexDirection="row" gap="4rem" display="flex">
             <UserImage size="130px" />
             <Box flexDirection="column" gap="1rem" display="flex">
-            <Box flexDirection="row" gap="4rem" display="flex">
-            <Grid container gap="2rem">
-              <Typography variant="h3" color={dark} fontWeight="500">
-                {detail?.name}
-              </Typography>
-              <Link to='/EditProfile' style={{textDecoration: "none"}}>
-              <Button variant="outlined">Edit Profile</Button>
-              </Link>
-              </Grid>
+              <Box flexDirection="row" gap="4rem" display="flex">
+                <Grid container gap="2rem">
+                  <Typography variant="h3" color={dark} fontWeight="500">
+                    {otherUserDetail?.name}
+                  </Typography>
+
+                  {detail?._id === otherUserDetail?._id ? (
+                    <Link to="/EditProfile" style={{ textDecoration: "none" }}>
+                      <Button variant="outlined">Edit Profile</Button>
+                    </Link>
+                  ) : !isFriend ? (
+                      <Button variant="outlined" onClick={handleAddFriend}>Add Friend</Button>
+                  ) : (
+                      <Button variant="outlined" onClick={handleRemoveFriend}>Remove Friend</Button>
+                  )}
+                </Grid>
               </Box>
               {isNonMobileScreens && (
                 <Box flexDirection="row" gap="4rem" display="flex">
                   <Typography variant="h5" color={dark} fontWeight="500">
-                    0 Posts
+                    {userPost.length} Posts
                   </Typography>
                   <Typography variant="h5" color={dark} fontWeight="500">
-                    {totalFollower} Followers
+                    {otherUserDetail?.followers?.length} Followers
                   </Typography>
                   <Typography variant="h5" color={dark} fontWeight="500">
-                    {totalFollowing} Following
+                    {otherUserDetail?.followings?.length} Following
                   </Typography>
                 </Box>
               )}
 
               <Typography variant="h5" color={dark} fontWeight="500">
-                {detail?.bio}
+                {otherUserDetail?.bio}
               </Typography>
             </Box>
           </Box>
@@ -69,23 +105,18 @@ const Profile = () => {
           <Box>
             <ImageList
               sx={{ overflow: "hidden" }}
-              cols={4}
+              cols={3}
               gap={6}
               variant="root"
-
               //rowHeight={164}
             >
-              {itemData.map((item) => (
-                <ImageListItem key={item.img}>
-                  <img
-                    src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-                    srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                    alt={item.title}
-                    cols={1}
-                    loading="lazy"
-                    variant="standard"
-                  />
-                </ImageListItem>
+              {userPost.map((item) => (
+                <PostImage
+                  key={item._id}
+                  image={item.image}
+                  decs={item.decs}
+                  id={item._id}
+                />
               ))}
             </ImageList>
           </Box>
@@ -94,56 +125,5 @@ const Profile = () => {
     </Box>
   );
 };
-
-const itemData = [
-  {
-    img: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
-    title: "Breakfast",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
-    title: "Burger",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-    title: "Camera",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
-    title: "Coffee",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1533827432537-70133748f5c8",
-    title: "Hats",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
-    title: "Honey",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
-    title: "Basketball",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1518756131217-31eb79b20e8f",
-    title: "Fern",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1597645587822-e99fa5d45d25",
-    title: "Mushrooms",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1567306301408-9b74779a11af",
-    title: "Tomato basil",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1471357674240-e1a485acb3e1",
-    title: "Sea star",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
-    title: "Bike",
-  },
-];
 
 export default Profile;

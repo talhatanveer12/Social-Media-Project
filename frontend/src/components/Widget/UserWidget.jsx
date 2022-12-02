@@ -8,19 +8,18 @@ import { Box, Typography, Divider, useTheme } from "@mui/material";
 import UserImage from "../UI/UserImage";
 import WidgetWrapper from "../UI/WidgetWrapper";
 
-
 import Card from "../UI/Card";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const UserWidget = () => {
-  const {detail,totalFollower,totalFollowing} = useSelector((state) => state.User);
+  const { detail, totalFollower, totalFollowing } = useSelector(
+    (state) => state.User
+  );
   const { palette } = useTheme();
   const dark = palette.neutral.dark;
   const medium = palette.neutral.medium;
   const main = palette.neutral.main;
-
-
 
   return (
     <WidgetWrapper>
@@ -33,39 +32,38 @@ const UserWidget = () => {
         <Card gap="1rem">
           <UserImage image />
           <Box>
-          <Link to='/Profile' style={{textDecoration: 'none'}}>
-            <Typography
-              variant="h4"
-              color={dark}
-              fontWeight="500"
-              sx={{
-                "&:hover": {
-                  color: palette.primary.light,
-                  cursor: "pointer",
-                },
-              }}
-            >
-              {detail?.name}
-            </Typography>
+            <Link to={`/Profile/${detail?._id}`} style={{ textDecoration: "none" }}>
+              <Typography
+                variant="h4"
+                color={dark}
+                fontWeight="500"
+                sx={{
+                  "&:hover": {
+                    color: palette.primary.light,
+                    cursor: "pointer",
+                  },
+                }}
+              >
+                {detail?.name}
+              </Typography>
             </Link>
             <Typography color={medium}>{totalFollowing} friends</Typography>
           </Box>
         </Card>
-        <Link to='EditProfile'>
-        <Typography
-              variant="h4"
-              color={dark}
-              fontWeight="500"
-              sx={{
-                "&:hover": {
-                  color: palette.primary.light,
-                  cursor: "pointer",
-                },
-              }}
-            >
-              <ManageAccountsOutlined />
-            </Typography>
-        
+        <Link to="EditProfile">
+          <Typography
+            variant="h4"
+            color={dark}
+            fontWeight="500"
+            sx={{
+              "&:hover": {
+                color: palette.primary.light,
+                cursor: "pointer",
+              },
+            }}
+          >
+            <ManageAccountsOutlined />
+          </Typography>
         </Link>
       </Card>
 

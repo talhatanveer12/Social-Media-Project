@@ -1,5 +1,5 @@
 import axiosInstance from "../../Http-Request/axios-instance";
-import { getAllUser } from "./userSlice";
+import { getAllUser, updateFollowing } from "./userSlice";
 
 export const getUserDetail = (userId) => async (dispatch) => {
     try {
@@ -28,6 +28,28 @@ export const getAllUserDetail = () => async (dispatch) => {
             dispatch(getAllUser(res.data.user));
         }
         return res;
+    } catch (error) {
+        
+    }
+}
+
+export const followUser = (data) => async (dispatch) => {
+    try {
+        const res = await axiosInstance.post('/user/follow',data);
+        if(res.status === 200) {
+            dispatch(updateFollowing({following: res.data.following,follower: res.data.follower}));
+        }
+    } catch (error) {
+        
+    }
+}
+
+export const unfollowUser = (data) => async (dispatch) => {
+    try {
+        const res = await axiosInstance.post('/user/unfollow',data);
+        if(res.status === 200) {
+            dispatch(updateFollowing({following: res.data.following,follower: res.data.follower}));
+        }
     } catch (error) {
         
     }

@@ -29,18 +29,25 @@ router.post("/create", upload.single("image"), async (req, res) => {
   const post = await Post.find();
   //res.status(201).json(post);
   try {
-    res.status(200).json({post: post});
+    res.status(200).json({ post: post });
   } catch (error) {
     res.status(404).json("failed");
   }
 });
 
-router.get('/all-post', async (req,res) => {
+router.get("/all-post", auth, async (req, res) => {
   const post = await Post.find();
-  res.status(200).json({post: post});
-})
+  const user = await User.findById(req.user._id).select("_id");
+  res.status(200).json({ post: post, id: user });
+});
 
-router.post('/:id/comments', async (req,res) => {
+router.get("/get-post/:id", async (req, res) => {
+  const post = await Post.find({ userId: req.params.id });
+  const user = await User.findById(req.params.id).select("-password");
+  res.status(200).json({ post: post, user: user });
+});
+
+router.post("/:id/comments", async (req, res) => {
   const post = await Post.findById(req.params.id);
   const user = await User.findById(req.body.userId);
   await post.updateOne({
@@ -49,22 +56,21 @@ router.post('/:id/comments', async (req,res) => {
         name: user?.name,
         email: user?.email,
         profilePic: user?.profilePic,
-        message: req.body.message
-      }
-    }
+        message: req.body.message,
+      },
+    },
   });
 
   const getPost = await Post.find();
 
   try {
-    res.status(200).json({post: getPost});
+    res.status(200).json({ post: getPost });
   } catch (error) {
     res.status(404).json("failed");
   }
-  
-})
+});
 
-router.patch('/:id/likes',  async (req, res) => {
+router.patch("/:id/likes", async (req, res) => {
   try {
     const { id } = req.params;
     const { userId } = req.body;

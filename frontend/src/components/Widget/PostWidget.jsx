@@ -26,6 +26,7 @@ const PostWidget = ({
   postId,
   postUserId,
   name,
+  email,
   description,
   location,
   picturePath,
@@ -34,7 +35,7 @@ const PostWidget = ({
   comments,
 }) => {
   const dispatch = useDispatch();
-  const { detail } = useSelector((state) => state.User);
+  const { detail,followings } = useSelector((state) => state.User);
   const [isComments, setIsComments] = useState(false);
   const [addComment, setComment] = useState("");
 
@@ -44,6 +45,7 @@ const PostWidget = ({
   // const isLiked = 1 ? true : false;
   // const likeCount = 1;
 
+  
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
@@ -70,7 +72,9 @@ const PostWidget = ({
     <WidgetWrapper m="2rem 0">
       <Friend
         friendId={postUserId}
+        friend={followings}
         name={name}
+        email={email}
         subtitle={location}
         userPicturePath={userPicturePath}
       />

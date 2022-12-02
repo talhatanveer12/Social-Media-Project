@@ -10,34 +10,30 @@ router.get("/me", auth, async (req, res) => {
     email: user.email,
     _id: user._id,
     bio: user.bio,
-    profilePic: user.profilePic
+    profilePic: user.profilePic,
   };
 
   const follower = user.followers;
   const following = user.followings;
 
-  res.send({detail: detail, follower: follower,following: following});
+  res.send({ detail: detail, follower: follower, following: following });
 });
 
-router.get('/all-user',auth, async (req,res) => {
+router.get("/all-user", auth, async (req, res) => {
   const user = await User.find().select("-password");
   try {
-    res.status(200).json({user: user});
-  } catch (error) {
-    
-  }
-})
+    res.status(200).json({ user: user });
+  } catch (error) {}
+});
 
 router.post("/follow", auth, async (req, res) => {
-  const currentUser = await User.findById("637c9660de573f5290f5123e").select("-password");
-  const user = await User.findById("637c9421b0337f3a00ad8edc").select(
-    "-password"
-  );
+  const currentUser = await User.findById(req.user._id).select("-password");
+  const user = await User.findById(req.body.id).select("-password");
 
-  if (!user.followings.find((data) => data.email === currentUser.email)) {
+  if (!user.followers.find((data) => data.email === currentUser.email)) {
     await currentUser.updateOne({
       $push: {
-        followers: {
+        followings: {
           email: user.email,
           name: user.name,
           profilePic: user.profilePic,
@@ -48,11 +44,11 @@ router.post("/follow", auth, async (req, res) => {
 
     await User.updateOne(
       {
-        email: req.body.email,
+        _id: req.body.id,
       },
       {
         $push: {
-          followings: {
+          followers: {
             email: currentUser.email,
             name: currentUser.name,
             profilePic: currentUser.profilePic,
@@ -61,8 +57,12 @@ router.post("/follow", auth, async (req, res) => {
         },
       }
     );
+    const result = await User.findById(req.user._id).select("-password");
+    const result1 = await User.findById(req.body.id).select("-password");
+    const following = result.followings;
+    const follower = result1.followers;
 
-    res.status(200).json("Successfully");
+    res.status(200).json({following: following,follower: follower});
   } else {
     res.status(200).json("You already follow this user");
   }
@@ -70,14 +70,14 @@ router.post("/follow", auth, async (req, res) => {
 
 router.post("/unfollow", auth, async (req, res) => {
   const currentUser = await User.findById(req.user._id).select("-password");
-  const user = await User.findById("637c967ade573f5290f51241").select(
+  const user = await User.findById(req.body.id).select(
     "-password"
   );
 
-  if (user.followings.find((data) => data.email === currentUser.email)) {
+  if (user.followers.find((data) => data.email === currentUser.email)) {
     await currentUser.updateOne({
       $pull: {
-        followers: {
+        followings: {
           email: user.email,
           name: user.name,
           profilePic: user.profilePic,
@@ -88,11 +88,11 @@ router.post("/unfollow", auth, async (req, res) => {
 
     await User.updateOne(
       {
-        email: req.body.email,
+        _id: req.body.id,
       },
       {
         $pull: {
-          followings: {
+          followers: {
             email: currentUser.email,
             name: currentUser.name,
             profilePic: currentUser.profilePic,
@@ -102,7 +102,12 @@ router.post("/unfollow", auth, async (req, res) => {
       }
     );
 
-    res.status(200).json("Successfully");
+    const result = await User.findById(req.user._id).select("-password");
+    const result1 = await User.findById(req.body.id).select("-password");
+    const following = result.followings;
+    const follower = result1.followers;
+
+    res.status(200).json({following: following,follower: follower});
   } else {
     res.status(200).json("You already follow this user");
   }
@@ -118,9 +123,9 @@ router.get("/follower", auth, async (req, res) => {
   res.send(users);
 });
 
-router.get("/:id", auth, async (req,res) => {
+router.get("/:id", auth, async (req, res) => {
   const users = await User.findById(req.params.id).select("-password");
   res.send(users);
-})
+});
 
 module.exports = router;

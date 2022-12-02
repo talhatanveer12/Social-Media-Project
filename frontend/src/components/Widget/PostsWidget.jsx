@@ -38,6 +38,14 @@ const PostsWidget = ({
               return test.name;
             })
         }
+        email={
+          user &&
+          user
+            .filter((data) => data._id === userId)
+            .map((test) => {
+              return test.email;
+            })
+        }
         description={description}
         location={"location"}
         picturePath={picturePath}

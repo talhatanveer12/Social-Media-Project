@@ -1,15 +1,30 @@
 import axiosInstance, { axiosFileInstance } from "../../Http-Request/axios-instance";
 import socket from "../../Socket";
-import { getPost, setPost, setPostLike } from "./postSlice";
+import { getOtherUser } from "../User/userSlice";
+import { getPost, getUserPost, setPost, setPostLike } from "./postSlice";
 
 
 export const getAllPost = () => async (dispatch) => {
     try {
         const res = await axiosInstance.get('/post/all-post');
         if(res.status === 200) {
-            dispatch(getPost(res.data.post));
+            dispatch(getPost({post: res.data.post,id: res.data.id._id}));
         }
         return res;
+    } catch (error) {
+        
+    }
+}
+
+export const getUserAllPost = (id) => async (dispatch) => {
+    try {
+        console.log("weeee");
+        const res = await axiosInstance.get(`post/get-post/${id}`);
+        if(res.status === 200) {
+            console.log(res.data,"rrtrt");
+            dispatch(getUserPost(res.data.post));
+            dispatch(getOtherUser(res.data.user));
+        }
     } catch (error) {
         
     }
