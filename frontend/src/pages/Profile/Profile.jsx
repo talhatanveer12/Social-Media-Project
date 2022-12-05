@@ -63,7 +63,7 @@ const Profile = () => {
       >
         <Box flexBasis={isNonMobileScreens ? "85%" : undefined}>
           <Box flexDirection="row" gap="4rem" display="flex">
-            <UserImage size="130px" />
+            <UserImage image={otherUserDetail?.profilePic} size="130px" />
             <Box flexDirection="column" gap="1rem" display="flex">
               <Box flexDirection="row" gap="4rem" display="flex">
                 <Grid container gap="2rem">

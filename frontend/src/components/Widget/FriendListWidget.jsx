@@ -27,7 +27,7 @@ const FriendListWidget = ({title,data,friend,follower}) => {
             email={data?.email}
             friend={friend}
             follower={follower}
-            userPicturePath={'../../../public/logo192.png'}
+            userPicturePath={data?.profilePic}
           />}) : <Typography variant="h4" align="center">No Friends Found</Typography> }
           
       </Box>

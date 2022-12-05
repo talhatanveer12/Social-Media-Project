@@ -49,7 +49,14 @@ const PostsWidget = ({
         description={description}
         location={"location"}
         picturePath={picturePath}
-        userPicturePath={"../../../public/logo192.png"}
+        userPicturePath={
+          user &&
+          user
+            .filter((data) => data._id === userId)
+            .map((test) => {
+              return test.profilePic;
+            })
+        }
         likes={likes}
         comments={comments}
       />

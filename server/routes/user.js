@@ -1,7 +1,25 @@
 const express = require("express");
 const auth = require("../middleware/auth");
 const { User } = require("../models/User");
+const multer = require("multer");
 const router = express.Router();
+const fs = require("fs");
+
+const { promisify } = require("util");
+
+const unlinkAsync = promisify(fs.unlink);
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/images");
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname.split(".");
+    cb(null, name[0] + "-" + Date.now() + "." + name[1]);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 router.get("/me", auth, async (req, res) => {
   const user = await User.findById(req.user._id).select("-password");
@@ -9,7 +27,8 @@ router.get("/me", auth, async (req, res) => {
     name: user.name,
     email: user.email,
     _id: user._id,
-    bio: user.bio,
+    Bio: user.Bio,
+    address: user.address,
     profilePic: user.profilePic,
   };
 
@@ -18,6 +37,45 @@ router.get("/me", auth, async (req, res) => {
 
   res.send({ detail: detail, follower: follower, following: following });
 });
+
+router.post(
+  "/updateProfile",
+  [auth, upload.single("image")],
+  async (req, res) => {
+    const imageDelete = await User.findById(req.user._id).select("-password");
+    if (req.file?.filename) {
+      await unlinkAsync(`public/images/${imageDelete?.profilePic}`);
+    }
+    await User.findByIdAndUpdate(req.user._id, {
+      name: req.body.name,
+      profilePic: req.file?.filename,
+      Bio: req.body.Bio,
+      address: req.body.address,
+    });
+    const user = await User.findById(req.user._id).select("-password");
+    await User.updateMany(
+      { "followers.email": user.email },
+      { $set: { "followers.$.profilePic": req.file?.filename } }
+    );
+    await User.updateMany(
+      { "followings.email": user.email },
+      { $set: { "followings.$.profilePic": req.file?.filename } }
+    );
+    const detail = {
+      name: user.name,
+      email: user.email,
+      _id: user._id,
+      Bio: user.Bio,
+      address: user.address,
+      profilePic: user.profilePic,
+    };
+    const follower = user.followers;
+    const following = user.followings;
+    res
+      .status(200)
+      .json({ detail: detail, follower: follower, following: following });
+  }
+);
 
 router.get("/all-user", auth, async (req, res) => {
   const user = await User.find().select("-password");
@@ -62,7 +120,7 @@ router.post("/follow", auth, async (req, res) => {
     const following = result.followings;
     const follower = result1.followers;
 
-    res.status(200).json({following: following,follower: follower});
+    res.status(200).json({ following: following, follower: follower });
   } else {
     res.status(200).json("You already follow this user");
   }
@@ -70,9 +128,7 @@ router.post("/follow", auth, async (req, res) => {
 
 router.post("/unfollow", auth, async (req, res) => {
   const currentUser = await User.findById(req.user._id).select("-password");
-  const user = await User.findById(req.body.id).select(
-    "-password"
-  );
+  const user = await User.findById(req.body.id).select("-password");
 
   if (user.followers.find((data) => data.email === currentUser.email)) {
     await currentUser.updateOne({
@@ -107,7 +163,7 @@ router.post("/unfollow", auth, async (req, res) => {
     const following = result.followings;
     const follower = result1.followers;
 
-    res.status(200).json({following: following,follower: follower});
+    res.status(200).json({ following: following, follower: follower });
   } else {
     res.status(200).json("You already follow this user");
   }

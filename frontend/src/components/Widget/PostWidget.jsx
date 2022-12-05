@@ -76,7 +76,7 @@ const PostWidget = ({
         name={name}
         email={email}
         subtitle={location}
-        userPicturePath={userPicturePath}
+        userPicturePath={userPicturePath?.toString()}
       />
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}

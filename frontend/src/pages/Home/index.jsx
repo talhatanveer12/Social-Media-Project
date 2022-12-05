@@ -60,7 +60,7 @@ const Home = () => {
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
         >
-          <MyPostWidget picturePath={"../../public/logo512.png"} />
+          <MyPostWidget />
           {post &&
             post.map((data) => {
               return (

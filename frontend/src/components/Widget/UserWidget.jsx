@@ -30,7 +30,7 @@ const UserWidget = () => {
         //onClick={() => navigate(`/profile/${userId}`)}
       >
         <Card gap="1rem">
-          <UserImage image />
+          <UserImage image={detail?.profilePic} />
           <Box>
             <Link to={`/Profile/${detail?._id}`} style={{ textDecoration: "none" }}>
               <Typography
@@ -77,7 +77,7 @@ const UserWidget = () => {
         </Box>
         <Box display="flex" alignItems="center" gap="1rem">
           <InfoOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>{detail?.bio}</Typography>
+          <Typography color={medium}>{detail?.Bio}</Typography>
         </Box>
       </Box>
 

@@ -18,10 +18,8 @@ export const getAllPost = () => async (dispatch) => {
 
 export const getUserAllPost = (id) => async (dispatch) => {
     try {
-        console.log("weeee");
         const res = await axiosInstance.get(`post/get-post/${id}`);
         if(res.status === 200) {
-            console.log(res.data,"rrtrt");
             dispatch(getUserPost(res.data.post));
             dispatch(getOtherUser(res.data.user));
         }
@@ -37,6 +35,7 @@ export const createPost = (data) => async (dispatch) => {
             dispatch(setPost(res.data.post));
             socket.emit("create_post", {message: res.data.post});
         }
+        return res;
     } catch (error) {
         
     }

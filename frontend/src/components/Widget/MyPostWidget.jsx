@@ -25,8 +25,9 @@ import WidgetWrapper from "../UI/WidgetWrapper";
 import UserImage from "../UI/UserImage";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "../../store/Post/postAction";
+import Swal from "sweetalert2";
 
-const MyPostWidget = ({ picturePath }) => {
+const MyPostWidget = () => {
   const dispatch = useDispatch();
   const { detail } = useSelector((state) => state.User);
   const [isImage, setIsImage] = useState(false);
@@ -46,20 +47,24 @@ const MyPostWidget = ({ picturePath }) => {
       formData.append("picturePath", image.name);
     }
 
-    dispatch(createPost(formData));
+    dispatch(createPost(formData)).then((data) => {
+      if (data.status === 200) {
+        Swal.fire({
+          text: "Post Create Successfully",
+          icon: "success",
+        });
+      }
+    });
 
     setImage(null);
     setPost("");
     setIsImage(false);
   };
 
-
-
-  
   return (
     <WidgetWrapper>
       <Card gap="1.5rem">
-        <UserImage image={picturePath} />
+        <UserImage image={detail?.profilePic} />
         <InputBase
           placeholder="What's on your mind..."
           onChange={(e) => setPost(e.target.value)}
@@ -105,7 +110,9 @@ const MyPostWidget = ({ picturePath }) => {
                 </Box>
                 {image && (
                   <IconButton
-                    onClick={() => {setImage(null)}}
+                    onClick={() => {
+                      setImage(null);
+                    }}
                     sx={{ width: "15%" }}
                   >
                     <DeleteOutlined />
@@ -120,7 +127,12 @@ const MyPostWidget = ({ picturePath }) => {
       <Divider sx={{ margin: "1.25rem 0" }} />
 
       <Card>
-        <Card gap="0.25rem" onClick={() => {setIsImage(!isImage)}}>
+        <Card
+          gap="0.25rem"
+          onClick={() => {
+            setIsImage(!isImage);
+          }}
+        >
           <ImageOutlined sx={{ color: mediumMain }} />
           <Typography
             color={mediumMain}
@@ -129,7 +141,6 @@ const MyPostWidget = ({ picturePath }) => {
             Image
           </Typography>
         </Card>
-
 
         {isNonMobileScreens ? (
           <>

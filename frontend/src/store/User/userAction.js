@@ -1,5 +1,5 @@
-import axiosInstance from "../../Http-Request/axios-instance";
-import { getAllUser, updateFollowing } from "./userSlice";
+import axiosInstance, { axiosFileInstance } from "../../Http-Request/axios-instance";
+import { getAllUser, updateFollowing, updateProfile } from "./userSlice";
 
 export const getUserDetail = (userId) => async (dispatch) => {
     try {
@@ -50,6 +50,18 @@ export const unfollowUser = (data) => async (dispatch) => {
         if(res.status === 200) {
             dispatch(updateFollowing({following: res.data.following,follower: res.data.follower}));
         }
+    } catch (error) {
+        
+    }
+}
+
+export const updateUserProfile = (data) => async (dispatch) => {
+    try {
+        const res = await axiosFileInstance.post('/user/updateProfile',data);
+        if(res.status === 200) {
+            dispatch(updateProfile({detail: res.data.detail,following: res.data.following,follower: res.data.follower}));
+        }
+        return res;
     } catch (error) {
         
     }

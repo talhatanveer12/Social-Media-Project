@@ -30,11 +30,16 @@ const userSlice = createSlice({
         updateFollowing: (state,action) => {
             state.followings = action.payload.following;
             state.otherUserDetail.followers = action.payload.follower ? action.payload.follower : [];
+        },
+        updateProfile: (state,action) => {
+            state.detail = action.payload.detail;
+            state.followers = action.payload.follower;
+            state.followings = action.payload.following;
         }
     },
 });
 
 export default userSlice;
-export const {getUserDetail,getAllUser,getOtherUser,updateFollowing} = userSlice.actions;
+export const {getUserDetail,getAllUser,getOtherUser,updateFollowing,updateProfile} = userSlice.actions;
 
 
