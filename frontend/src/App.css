@@ -7,6 +7,38 @@
   pointer-events: none;
 }
 
+.three-dots-action {
+  display: block;
+  position: absolute;
+  /* background-color: #f9f9f9; */
+  min-width: 310px;
+  max-width: 310px;
+  margin-top: 45px;
+  border-radius: 12px;
+  /* padding: 0px 12px;  */
+  overflow:auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+
+}
+.three-dots-action a {
+  color: #ea9b45 !important;
+  padding: 12px 16px;
+  min-width: 310px;
+  max-width: 310px;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+ }
+
+ .three-dots-action a:hover {
+  background-color: #00A0BC;
+ }
+
+ .linkStyle {
+  background: none !important;
+ }
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

@@ -84,6 +84,11 @@ router.get("/all-user", auth, async (req, res) => {
   } catch (error) {}
 });
 
+router.get("/search", auth, async (req, res) => {
+  const user= await User.find({name: {$regex: req.query.name,  $options: 'i'}}).select("-password");;
+  res.status(200).json({result: user})
+});
+
 router.post("/follow", auth, async (req, res) => {
   const currentUser = await User.findById(req.user._id).select("-password");
   const user = await User.findById(req.body.id).select("-password");
@@ -183,5 +188,12 @@ router.get("/:id", auth, async (req, res) => {
   const users = await User.findById(req.params.id).select("-password");
   res.send(users);
 });
+
+// router.get("/abc", auth, async (req, res) => {
+//   const user = await User.find().select("-password");
+//   try {
+//     res.status(200).json({ user: user });
+//   } catch (error) {}
+// });
 
 module.exports = router;

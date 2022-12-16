@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Navbar from "../../components/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import { updateUserProfile } from "../../store/User/userAction";
 import Swal from "sweetalert2";
 // import ImagePicker from "../../components/UI/ImagePicker";
@@ -38,13 +38,6 @@ const EditProfile = () => {
     }).catch((error) => {
 
     });
-
-    console.log({
-      name: data.get("name"),
-      address: data.get("address"),
-      bio: data.get("Bio"),
-      image: data.get("image"),
-    });
   };
 
   return (
@@ -58,9 +51,6 @@ const EditProfile = () => {
         justifyContent="space-between"
         flexDirection="column"
       >
-        {/* <Typography variant="h3" color={dark} fontWeight="500">
-          Edit Profile
-        </Typography> */}
         <Box
           width="100%"
           display={isNonMobileScreens ? "flex" : "block"}

@@ -5,14 +5,13 @@ import PostsWidget from "../../components/Widget/PostsWidget";
 // import AdvertWidget from "../components/Widget/AdvertWidget";
 import FriendListWidget from "../../components/Widget/FriendListWidget";
 import UserWidget from "../../components/Widget/UserWidget";
-import Navbar from "../../components/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getAllPost } from "../../store/Post/postAction";
 import socket from "../../Socket";
 import { setPost, setPostLike } from "../../store/Post/postSlice";
 import { getAllUserDetail } from "../../store/User/userAction";
-
 
 const Home = () => {
   const dispatch = useDispatch();

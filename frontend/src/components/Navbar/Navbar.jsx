@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   IconButton,
@@ -20,16 +20,27 @@ import {
   Menu,
   Close,
 } from "@mui/icons-material";
-import Card from "./UI/Card";
+import "./navbar.css";
+import Card from "../UI/Card";
 import { useDispatch, useSelector } from "react-redux";
-import { setTheme } from "../store/themeSlice";
+import { setTheme } from "../../store/themeSlice";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
+//import Popover from "@mui/material/Popover";
+//import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
+//import { Popover } from "react-tiny-popover";
+import UserImage from "../UI/UserImage";
+import { searchedUserByName } from "../../store/User/userAction";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {detail} = useSelector((state) => state.User);
+  const { detail, SearchedUser } = useSelector((state) => state.User);
+  const [search, setSearch] = useState("");
+  const [open, setOpen] = useState(false);
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
+
+  //const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
 
@@ -40,7 +51,19 @@ const Navbar = () => {
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
   const fullName = `${detail?.name}`;
+  const handleSearch = (event) => {
+    console.log(event.target.value);
+    setSearch(event.target.value);
+    dispatch(searchedUserByName(event.target.value));
+  };
 
+  useEffect(() => {
+    if (search.length > 0) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  }, [search]);
 
   return (
     <Card padding="1rem 6%" backgroundColor={alt}>
@@ -59,32 +82,97 @@ const Navbar = () => {
         >
           MERN Project
         </Typography>
+
         {isNonMobileScreens && (
-          <Card
-            backgroundColor={neutralLight}
-            borderRadius="9px"
-            gap="3rem"
-            padding="0.1rem 1.5rem"
-          >
-            <InputBase placeholder="Search..." />
-            <IconButton>
-              <Search />
-            </IconButton>
-          </Card>
+          <>
+            <Card flexDirection="column">
+              <Card
+                backgroundColor={neutralLight}
+                borderRadius="9px"
+                gap="3rem"
+                padding="0.1rem 1.5rem"
+              >
+                <InputBase onChange={handleSearch} placeholder="Search..." />
+                <IconButton>
+                  <Search />
+                </IconButton>
+              </Card>
+              {open && (
+                <Card
+                  className="three-dots-action"
+                  backgroundColor={neutralLight}
+                  flexDirection="column"
+                >
+                  {/* <Box
+                    flexDirection="row"
+                    gap="1rem"
+                    alignItems="center"
+                    display="flex"
+                    padding="20px"
+                  >
+                    No Data Found..
+                  </Box> */}
+                  {SearchedUser?.length > 0 ?
+                    SearchedUser.map((data) => {
+                      return (
+                        <Link to={`/Profile/${data._id}`}
+                        key={data._id}
+                        >
+                          <Box
+                            flexDirection="row"
+                            gap="1rem"
+                            alignItems="center"
+                            display="flex"
+                          >
+                            <UserImage size="40px" image={data.profilePic} />
+                            <Typography
+                              variant="h5"
+                              color={dark}
+                              fontWeight="500"
+                            >
+                              {data.name}
+                            </Typography>
+                          </Box>
+                        </Link>
+                      );
+                    }) : <Box
+                    flexDirection="row"
+                    gap="1rem"
+                    alignItems="center"
+                    display="flex"
+                    padding="20px"
+                  >
+                    No Data Found..
+                  </Box>}
+                </Card>
+              )}
+            </Card>
+          </>
         )}
+        {/* <div className="search">
+        
+        </div> */}
       </Card>
 
       {/* DESKTOP NAV */}
       {isNonMobileScreens ? (
         <Card gap="2rem">
-          <IconButton onClick={() => { dispatch(setTheme())}}>
+          <IconButton
+            onClick={() => {
+              dispatch(setTheme());
+            }}
+          >
             {theme.palette.mode === "dark" ? (
               <DarkMode sx={{ fontSize: "25px" }} />
             ) : (
               <LightMode sx={{ color: dark, fontSize: "25px" }} />
             )}
           </IconButton>
-          <Message sx={{ fontSize: "25px" }} />
+          <Link to="/Message" className="linkStyle">
+            <IconButton>
+              <Message sx={{ fontSize: "25px" }} />
+            </IconButton>
+          </Link>
           <Notifications sx={{ fontSize: "25px" }} />
           <Help sx={{ fontSize: "25px" }} />
           <FormControl variant="standard" value={fullName}>

@@ -8,7 +8,7 @@ import {
   useTheme,
 } from "@mui/material";
 import React, { useEffect } from "react";
-import Navbar from "../../components/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import UserImage from "../../components/UI/UserImage";
 import ImageList from "@mui/material/ImageList";
 import { useDispatch, useSelector } from "react-redux";

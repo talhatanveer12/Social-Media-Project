@@ -1,5 +1,5 @@
 import axiosInstance, { axiosFileInstance } from "../../Http-Request/axios-instance";
-import { getAllUser, updateFollowing, updateProfile } from "./userSlice";
+import { getAllUser, getSearchedUser, updateFollowing, updateProfile } from "./userSlice";
 
 export const getUserDetail = (userId) => async (dispatch) => {
     try {
@@ -62,6 +62,17 @@ export const updateUserProfile = (data) => async (dispatch) => {
             dispatch(updateProfile({detail: res.data.detail,following: res.data.following,follower: res.data.follower}));
         }
         return res;
+    } catch (error) {
+        
+    }
+}
+
+export const searchedUserByName = (data) => async (dispatch) => {
+    try {
+        const res = await axiosInstance.get(`/user/search?name=${data}`);
+        if(res.status === 200) {
+            dispatch(getSearchedUser(res.data.result));
+        }
     } catch (error) {
         
     }

@@ -18,6 +18,7 @@ import VerifyUser from "./pages/Auth/VerifyUser";
 import { loadUser } from "./store/Auth/authAction";
 import EditProfile from "./pages/Profile/EditProfile";
 import Profile from "./pages/Profile/Profile";
+import Message from "./pages/Message";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +35,7 @@ const router = createBrowserRouter(
       ></Route>
       <Route path="/EditProfile" element={<EditProfile />} />
       <Route path="/Profile/:id" element={<Profile />} />
+      <Route path="/Message" element={<Message/>} />
     </React.Fragment>
   )
 );

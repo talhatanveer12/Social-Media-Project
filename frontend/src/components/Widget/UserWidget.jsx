@@ -50,7 +50,7 @@ const UserWidget = () => {
             <Typography color={medium}>{totalFollowing} friends</Typography>
           </Box>
         </Card>
-        <Link to="EditProfile">
+        <Link to="EditProfile" className="linkStyle">
           <Typography
             variant="h4"
             color={dark}
