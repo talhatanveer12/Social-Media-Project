@@ -97,6 +97,7 @@ router.post("/follow", auth, async (req, res) => {
     await currentUser.updateOne({
       $push: {
         followings: {
+          _id: user._id,
           email: user.email,
           name: user.name,
           profilePic: user.profilePic,
@@ -112,6 +113,7 @@ router.post("/follow", auth, async (req, res) => {
       {
         $push: {
           followers: {
+            _id: currentUser._id,
             email: currentUser.email,
             name: currentUser.name,
             profilePic: currentUser.profilePic,

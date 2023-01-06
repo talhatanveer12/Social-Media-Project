@@ -35,7 +35,13 @@ const router = createBrowserRouter(
       ></Route>
       <Route path="/EditProfile" element={<EditProfile />} />
       <Route path="/Profile/:id" element={<Profile />} />
-      <Route path="/Message" element={<Message/>} />
+      <Route path="/Message" element={<Message />} />
+      <Route
+        path="/Message/:id"
+        element={
+          <Message/>
+        }
+      />
     </React.Fragment>
   )
 );

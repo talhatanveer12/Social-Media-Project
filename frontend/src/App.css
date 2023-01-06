@@ -21,6 +21,15 @@
   z-index: 100;
 
 }
+.SendMessage {
+  align-content: flex-end;
+  align-items: flex-end;
+}
+.messageStyle {
+  color: #00A0BC !important;
+  /* background-color: #00A0BC !important; */
+  overflow: hidden;
+}
 .three-dots-action a {
   color: #ea9b45 !important;
   padding: 12px 16px;

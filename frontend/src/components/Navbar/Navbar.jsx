@@ -23,7 +23,7 @@ import {
 import "./navbar.css";
 import Card from "../UI/Card";
 import { useDispatch, useSelector } from "react-redux";
-import { setTheme } from "../../store/themeSlice";
+import { setTheme } from "../../store/Theme/themeSlice";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 //import Popover from "@mui/material/Popover";
@@ -47,6 +47,7 @@ const Navbar = () => {
   const theme = useTheme();
   const neutralLight = theme.palette.neutral.light;
   const dark = theme.palette.neutral.dark;
+  const main =  theme.palette.neutral.main;
   const background = theme.palette.background.default;
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
@@ -127,7 +128,7 @@ const Navbar = () => {
                             <UserImage size="40px" image={data.profilePic} />
                             <Typography
                               variant="h5"
-                              color={dark}
+                              color={main}
                               fontWeight="500"
                             >
                               {data.name}

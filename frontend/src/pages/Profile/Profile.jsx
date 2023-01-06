@@ -27,6 +27,7 @@ const Profile = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
   const { palette } = useTheme();
   const dark = palette.neutral.dark;
+  const main = palette.neutral.main;
 
   const isFriend =
     followings &&
@@ -67,7 +68,7 @@ const Profile = () => {
             <Box flexDirection="column" gap="1rem" display="flex">
               <Box flexDirection="row" gap="4rem" display="flex">
                 <Grid container gap="2rem">
-                  <Typography variant="h3" color={dark} fontWeight="500">
+                  <Typography variant="h3" color={main} fontWeight="500">
                     {otherUserDetail?.name}
                   </Typography>
 
@@ -84,13 +85,13 @@ const Profile = () => {
               </Box>
               {isNonMobileScreens && (
                 <Box flexDirection="row" gap="4rem" display="flex">
-                  <Typography variant="h5" color={dark} fontWeight="500">
+                  <Typography variant="h5" color={main} fontWeight="500">
                     {userPost.length} Posts
                   </Typography>
-                  <Typography variant="h5" color={dark} fontWeight="500">
+                  <Typography variant="h5" color={main} fontWeight="500">
                     {otherUserDetail?.followers?.length} Followers
                   </Typography>
-                  <Typography variant="h5" color={dark} fontWeight="500">
+                  <Typography variant="h5" color={main} fontWeight="500">
                     {otherUserDetail?.followings?.length} Following
                   </Typography>
                 </Box>

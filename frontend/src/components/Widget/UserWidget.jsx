@@ -17,7 +17,7 @@ const UserWidget = () => {
     (state) => state.User
   );
   const { palette } = useTheme();
-  const dark = palette.neutral.dark;
+  //const dark = palette.neutral.dark;
   const medium = palette.neutral.medium;
   const main = palette.neutral.main;
 
@@ -35,7 +35,7 @@ const UserWidget = () => {
             <Link to={`/Profile/${detail?._id}`} style={{ textDecoration: "none" }}>
               <Typography
                 variant="h4"
-                color={dark}
+                color={main}
                 fontWeight="500"
                 sx={{
                   "&:hover": {
@@ -53,7 +53,7 @@ const UserWidget = () => {
         <Link to="EditProfile" className="linkStyle">
           <Typography
             variant="h4"
-            color={dark}
+            color={main}
             fontWeight="500"
             sx={{
               "&:hover": {
