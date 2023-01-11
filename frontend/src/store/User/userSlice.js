@@ -9,6 +9,7 @@ const initialState = {
     user: null,
     otherUserDetail: [],
     SearchedUser: null,
+    userMessageDetail: null,
 }
 
 const userSlice = createSlice({
@@ -16,11 +17,15 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         getUserDetail: (state,action) => {
+            localStorage.setItem("userId",action.payload.detail?._id);
             state.detail = action.payload.detail;
             state.followers = action.payload.follower;
             state.followings = action.payload.following;
             state.totalFollower = action.payload.follower.length;
             state.totalFollowing = action.payload.following.length;
+        },
+        getUSerMessageDetail: (state,action) => {
+            state.userMessageDetail = action.payload;
         },
         getAllUser: (state,action) => {
             state.user = action.payload;
@@ -44,6 +49,6 @@ const userSlice = createSlice({
 });
 
 export default userSlice;
-export const {getUserDetail,getAllUser,getOtherUser,updateFollowing,updateProfile,getSearchedUser} = userSlice.actions;
+export const {getUserDetail,getAllUser,getOtherUser,updateFollowing,updateProfile,getSearchedUser,getUSerMessageDetail} = userSlice.actions;
 
 

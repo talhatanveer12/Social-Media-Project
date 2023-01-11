@@ -9,6 +9,7 @@ import {
   FormControl,
   useTheme,
   useMediaQuery,
+  Button,
 } from "@mui/material";
 import {
   Search,
@@ -31,6 +32,7 @@ import { Link } from "react-router-dom";
 //import { Popover } from "react-tiny-popover";
 import UserImage from "../UI/UserImage";
 import { searchedUserByName } from "../../store/User/userAction";
+import { logout } from "../../store/Auth/authSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -47,7 +49,7 @@ const Navbar = () => {
   const theme = useTheme();
   const neutralLight = theme.palette.neutral.light;
   const dark = theme.palette.neutral.dark;
-  const main =  theme.palette.neutral.main;
+  const main = theme.palette.neutral.main;
   const background = theme.palette.background.default;
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
@@ -56,6 +58,11 @@ const Navbar = () => {
     console.log(event.target.value);
     setSearch(event.target.value);
     dispatch(searchedUserByName(event.target.value));
+  };
+
+  const logoutHandle = () => {
+    console.log("343434");
+    dispatch(logout());
   };
 
   useEffect(() => {
@@ -113,12 +120,10 @@ const Navbar = () => {
                   >
                     No Data Found..
                   </Box> */}
-                  {SearchedUser?.length > 0 ?
+                  {SearchedUser?.length > 0 ? (
                     SearchedUser.map((data) => {
                       return (
-                        <Link to={`/Profile/${data._id}`}
-                        key={data._id}
-                        >
+                        <Link to={`/Profile/${data._id}`} key={data._id}>
                           <Box
                             flexDirection="row"
                             gap="1rem"
@@ -136,15 +141,18 @@ const Navbar = () => {
                           </Box>
                         </Link>
                       );
-                    }) : <Box
-                    flexDirection="row"
-                    gap="1rem"
-                    alignItems="center"
-                    display="flex"
-                    padding="20px"
-                  >
-                    No Data Found..
-                  </Box>}
+                    })
+                  ) : (
+                    <Box
+                      flexDirection="row"
+                      gap="1rem"
+                      alignItems="center"
+                      display="flex"
+                      padding="20px"
+                    >
+                      No Data Found..
+                    </Box>
+                  )}
                 </Card>
               )}
             </Card>
@@ -197,7 +205,7 @@ const Navbar = () => {
               <MenuItem value={fullName}>
                 <Typography>{fullName}</Typography>
               </MenuItem>
-              <MenuItem>Log Out</MenuItem>
+              <MenuItem onClick={logoutHandle}>Log Out</MenuItem>
             </Select>
           </FormControl>
         </Card>
@@ -269,7 +277,10 @@ const Navbar = () => {
                 <MenuItem value={fullName}>
                   <Typography>{fullName}</Typography>
                 </MenuItem>
-                <MenuItem>Log Out</MenuItem>
+                <MenuItem>
+                  {" "}
+                  <Button onClick={logoutHandle}>Log Out</Button>
+                </MenuItem>
               </Select>
             </FormControl>
           </Card>

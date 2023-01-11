@@ -11,7 +11,7 @@ const ImageModal = ({ setShow, src, alt }) => {
       >
         <span className={classes.close}>&times;</span>
       </button>
-      <img className={classes.modal_content} src={`http://localhost:4000/images/${src}`} alt={alt} />
+      <img className={classes.modal_content} src={`${process.env.REACT_APP_IMAGE_BASE_URL}/${src}`} alt={alt} />
     </div>
   );
 };

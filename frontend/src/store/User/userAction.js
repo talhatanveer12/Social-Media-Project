@@ -1,11 +1,11 @@
 import axiosInstance, { axiosFileInstance } from "../../Http-Request/axios-instance";
-import { getAllUser, getSearchedUser, updateFollowing, updateProfile } from "./userSlice";
+import { getAllUser, getSearchedUser, getUSerMessageDetail, updateFollowing, updateProfile } from "./userSlice";
 
 export const getUserDetail = (userId) => async (dispatch) => {
     try {
         const res = await axiosInstance.get(`/user/${userId}`);
         if(res.status === 200) {
-            return res.data;
+            dispatch(getUSerMessageDetail(res.data));
         }
     } catch (error) {
         

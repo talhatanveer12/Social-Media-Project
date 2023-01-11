@@ -13,8 +13,8 @@ const PostImage = ({ image, decs,id }) => {
     >
       <ImageListItem key={image}>
         <img
-          src={`http://localhost:4000/images/${image}?w=164&h=164&fit=crop&auto=format`}
-          srcSet={`http://localhost:4000/images/${image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+          src={`${process.env.REACT_APP_IMAGE_BASE_URL}/${image}?w=164&h=164&fit=crop&auto=format`}
+          srcSet={`${process.env.REACT_APP_IMAGE_BASE_URL}/${image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
           alt={decs}
           cols={1}
           loading="lazy"
