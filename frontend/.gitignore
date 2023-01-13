@@ -16,7 +16,8 @@
 # production
 /build
 
-
+frontend/public/firebase-messaging-sw.js
+frontend/src/firebase/index.js
 
 # misc
 .DS_Store
