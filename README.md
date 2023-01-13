@@ -1,4 +1,4 @@
-# Social Media App
+# Social Media Project
 
 ## Function Requirements
 
