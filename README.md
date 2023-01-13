@@ -125,13 +125,13 @@
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/talhatanveer12/Social-Media-Project.svg?style=for-the-badge
 [contributors-url]: https://github.com/talhatanveer12/Social-Media-Project/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/talhatanveer12/Social-Media-Project.svg?style=for-the-badge
 [forks-url]: https://github.com/talhatanveer12/Social-Media-Project/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/talhatanveer12/Social-Media-Project.svg?style=for-the-badge
 [stars-url]: https://github.com/talhatanveer12/Social-Media-Project/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/talhatanveer12/Social-Media-Project.svg?style=for-the-badge
 [issues-url]: https://github.com/talhatanveer12/Social-Media-Project/issues
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
