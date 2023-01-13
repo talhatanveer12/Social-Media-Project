@@ -19,6 +19,9 @@ import { loadUser } from "./store/Auth/authAction";
 import EditProfile from "./pages/Profile/EditProfile";
 import Profile from "./pages/Profile/Profile";
 import Message from "./pages/Message";
+import { messaging } from "./firebase";
+import { getToken } from "firebase/messaging";
+//import "./firebase/firebaseNotifiaction";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -52,6 +55,26 @@ function App() {
   const { detail } = useSelector((state) => state.User);
   const { mode } = useSelector((state) => state.Theme);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+
+  async function requestPermission() {
+    const permission = await Notification.requestPermission();
+    if (permission === "granted") {
+      // Generate Token
+      const token = await getToken(messaging, {
+        vapidKey:
+          "BC6_FPOqRrwUw5qIKjiwM6dwuBrfZ59MT0cm07hHybcI099HwiYUt0mZnzp8cYCht9LWs7PI1mnQqpwAxyh0_Yg",
+      });
+      console.log("Token Gen", token);
+      // Send this token  to server ( db)
+    } else if (permission === "denied") {
+      alert("You denied for the notification");
+    }
+  }
+
+  useEffect(() => {
+    // Req user for notification permission
+    requestPermission();
+  }, []);
 
   useEffect(() => {
     if (token && !detail) {
