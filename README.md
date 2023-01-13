@@ -32,6 +32,9 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#function-requirement">Function Requirement</a></li>
+      </ul>
+      <ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -54,7 +57,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-## Function Requirements
+### Function Requirements
 
 - **User registration and login:** Users should be able to create an account, log in and log out.
     
