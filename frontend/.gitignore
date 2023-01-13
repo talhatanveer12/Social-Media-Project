@@ -12,6 +12,7 @@
 /coverage
 .env
 
+/public/firebase-messaging-sw.js
 # production
 /build
 

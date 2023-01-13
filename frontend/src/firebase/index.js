@@ -24,30 +24,3 @@ export const firebase = initializeApp(firebaseConfig);
 export const storage = getStorage();
 export const db = getFirestore(firebase);
 export const messaging = getMessaging(firebase);
-
-
-// function requestPermission() {
-//   console.log("Requesting permission...");
-//   Notification.requestPermission().then((permission) => {
-//     if (permission === "granted") {
-//       console.log("Notification permission granted.");
-//       //const app = initializeApp(firebaseConfig);
-
-//       const messaging = getMessaging(firebase);
-//       getToken(messaging, {
-//         vapidKey:
-//           "BC6_FPOqRrwUw5qIKjiwM6dwuBrfZ59MT0cm07hHybcI099HwiYUt0mZnzp8cYCht9LWs7PI1mnQqpwAxyh0_Yg",
-//       }).then((currentToken) => {
-//         if (currentToken) {
-//           console.log("currentToken: ", currentToken);
-//         } else {
-//           console.log("Can not get token");
-//         }
-//       });
-//     } else {
-//       console.log("Do not have permission!");
-//     }
-//   });
-// }
-
-// requestPermission();
