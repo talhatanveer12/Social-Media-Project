@@ -128,11 +128,18 @@ _Below is an example of how you can instruct your audience on installing and set
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [Node-url]: https://nodejs.org/en/
+[Material-url]: https://mui.com/
+[redux-url]: https://redux.js.org/
 
 [React.js]: https://img.shields.io/badge/React.js-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [Node.js]: https://img.shields.io/badge/node.js-20232A?style=for-the-badge&logo=nodedotjs&logoColor=026e00
 
+[Material.js]: https://img.shields.io/badge/Material-20232A?style=for-the-badge&logo=mui&logoColor=0059B2
+
 [Express.js]: https://img.shields.io/badge/express.js-20232A?style=for-the-badge&logo=EXPRESS&logoColor=000000
+
+[Redux.js]: https://img.shields.io/badge/redux-20232A?style=for-the-badge&logo=redux&logoColor=764abc
+
 
 [Express-url]: https://expressjs.com/
 [React-url]: https://reactjs.org/
