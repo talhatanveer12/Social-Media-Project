@@ -13,7 +13,7 @@ const post = require("./routes/post");
 const app = express();
 
 mongoose
-  .connect("mongodb://localhost/MernProject")
+  .connect("mongodb+srv://TalhaTanveer:T123a12AA@cluster0.hiby9p2.mongodb.net/?retryWrites=true&w=majority")
   .then(() => console.log("Connected to MongoDB..."))
   .catch((err) => console.error("Could not connect to MongoDB..."));
 
